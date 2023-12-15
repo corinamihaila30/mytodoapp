@@ -8,6 +8,7 @@ from django.contrib.auth.views import LoginView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import login
+from django.contrib.auth import logout
 
 
 from django.views import View
@@ -25,6 +26,12 @@ class CustomLoginView(LoginView):
 
     def get_success_url(self):
         return reverse_lazy('tasks')
+ 
+
+   
+def logout_view(request):
+        logout(request)
+        return redirect("/login/")
 
 
 class RegisterPage(FormView):
@@ -97,7 +104,6 @@ class DeleteView(LoginRequiredMixin, DeleteView):
 class TaskReorder(View):
     def post(self, request):
         form = PositionForm(request.POST)
-
         if form.is_valid():
             positionList = form.cleaned_data["position"].split(',')
 
